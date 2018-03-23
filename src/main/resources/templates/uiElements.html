@@ -130,7 +130,8 @@
                 tagValues = jQuery.trim($(nTds[2]).text()).replace(/\s+/g, ", ");
                 var uiValues = {
                     "id": id,
-                    "tagValues": tagValues
+                    "tagValues": tagValues,
+                    "project":projectId
                 };
                 valuesArray.push(uiValues);
             });
@@ -142,8 +143,11 @@
                 data: JSON.stringify(valuesArray),
                 contentType: 'application/json',
                 mimeType: 'application/json',
-                success: function(data) {
-                console.log("oik");
+                success: function(result) {
+                 if(result.status){
+                     window.location.href ="/addRules?projectId=" + projectId;
+
+                 }
                     },
                 error:function(data,status,er) {
                 }

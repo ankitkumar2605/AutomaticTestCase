@@ -2,6 +2,7 @@ package com.testcasegeneration.controller;
 
 import com.testcasegeneration.demo.StorageFileNotFoundException;
 import com.testcasegeneration.model.Project;
+import com.testcasegeneration.model.TagValuesCO;
 import com.testcasegeneration.model.UiElement;
 import com.testcasegeneration.repository.StorageService;
 import com.testcasegeneration.service.UiElementService;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Controller
 public class FileUploadController {
@@ -55,4 +58,11 @@ public class FileUploadController {
         return ResponseEntity.notFound().build();
     }
 
+
+    @RequestMapping(value = "/addRules", method = RequestMethod.GET)
+    public ModelAndView rules(ModelAndView modelAndView,String projectId) throws IOException {
+        modelAndView.addObject("project",projectId);
+        modelAndView.setViewName("addRules");
+        return modelAndView;
+    }
 }

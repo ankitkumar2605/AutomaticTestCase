@@ -1,10 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title>UI Elements</title>
+
+    <!--Bootstrap CSS CDN-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+    <!--Our Custom CSS-->
+
 </head>
 <body>
+<div class="row divform">
+    <!-- progressbar -->
+    <ul id="progressbar">
+        <li>Upload GUI files</li>
+        <li>UI Elements</li>
+        <li class="active">Add Rules</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset class="fieldsetForm">
+        <div class="input-group col-xs-12">
+            <input type="text" class="form-control input-lg" name="ruleName"
+                   placeholder="Rule Name"/>
+        </div>
+
+        <table id="ruleTable" class="display" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+        </table>
+    </fieldset>
+    <fieldset class="fieldsetForm">
+        <button type="submit" iclass="btn btn-primary pull-right">Next</button>
+    </fieldset>
+</div>
+
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<!-- Bootstrap Js CDN -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
+
+<link rel="stylesheet" href="../static/css/bootstrap-tagsinput.min.css" th:href="@{/css/bootstrap-tagsinput.min.css}"/>
+<script src="../static/js/bootstrap-tagsinput.min.js" th:src="@{/js/bootstrap-tagsinput.min.js}"></script>
+<link href="../static/css/style.css" th:href="@{/css/style1.css}" rel="stylesheet"/>
+<script th:inline="javascript">
+
+    $(document).ready(function () {
+        var projectId = [[${project}]];
+        $('#ruleTable').DataTable({
+            "ajax": {
+                "url": "/widgetList?projectId=" + projectId,
+                "dataSrc": ""
+            },
+            "aoColumns": [
+                {
+                    "mData": "name",
+                    "className": 'dt-left'
+                },
+                {
+                    "className": 'dt-left',
+                    "mRender": function (data, type, row) {
+                            var s = $('<select id="value" class="form-control" name="frequencyNames" />');
+                                 var tagValues = row.tagValues;
+                                 for(var val in tagValues) {
+                                     console.log("in"+tagValues[val]);
+                                     $("<option />", {value: tagValues[val], text: tagValues[val]}).appendTo(s);
+                                 }
+                                 console.log(s);
+                        return s.prop("outerHTML");
+                    }
+                }
+            ],
+            "paging":false,
+            "info":false,
+            "searching": false
+        });
+
+//        var theDataTable = $('#uiElementTable').DataTable();
+//
+//        $('button').click(function () {
+//            var valuesArray = [];
+//            var id;
+//            var tagValues;
+//            var rows = theDataTable.rows().data();
+//            $('#uiElementTable tbody tr').each(function (index) {
+//                id = rows[index].id;
+//                var nTds = $('td', this);
+//                tagValues = jQuery.trim($(nTds[2]).text()).replace(/\s+/g, ", ");
+//                var uiValues = {
+//                    "id": id,
+//                    "tagValues": tagValues
+//                };
+//                valuesArray.push(uiValues);
+//            });
+//
+//            $.ajax({
+//                url: "/saveTagValues",
+//                type: 'POST',
+//                dataType: 'json',
+//                data: JSON.stringify(valuesArray),
+//                contentType: 'application/json',
+//                mimeType: 'application/json',
+//                success: function(data) {
+//                    console.log("oik");
+//                },
+//                error:function(data,status,er) {
+//                }
+//            });
+//        });
+
+
+    });
+
+</script>
+
 
 </body>
 </html>
